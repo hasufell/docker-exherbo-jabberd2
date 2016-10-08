@@ -6,6 +6,11 @@ COPY ./config/paludis /etc/paludis
 
 ##### PACKAGE INSTALLATION #####
 
+# force dynamic linking of mysql to libressl
+RUN rm /usr/x86_64-pc-linux-gnu/lib/libcrypto.a \
+	/usr/x86_64-pc-linux-gnu/lib/libssl.a \
+	/usr/x86_64-pc-linux-gnu/lib/libtls.a
+
 # update world with our options
 RUN chgrp paludisbuild /dev/tty && \
 	eclectic env update && \
@@ -26,6 +31,8 @@ RUN eclectic config accept-all
 
 ################################
 
+RUN mkdir -p /var/run/jabber /var/log/jabber && \
+	chown jabber:jabber /var/run/jabber /var/log/jabber
 
 COPY ./config/supervisord.conf /etc/supervisord.conf
 
