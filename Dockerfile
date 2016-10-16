@@ -25,7 +25,8 @@ RUN chgrp paludisbuild /dev/tty && \
 	cave resolve -ks -Sa -sa -B world -x --permit-old-version '*/*' && \
 	cave purge -x && \
 	cave fix-linkage -x && \
-	rm -rf /usr/portage/distfiles/*
+	rm -rf /var/cache/paludis/distfiles/* \
+		/var/tmp/paludis/build/*
 
 RUN eclectic config accept-all
 
