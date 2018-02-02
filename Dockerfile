@@ -6,11 +6,6 @@ COPY ./config/paludis /etc/paludis
 
 ##### PACKAGE INSTALLATION #####
 
-# force dynamic linking of mysql to libressl
-RUN rm /usr/x86_64-pc-linux-gnu/lib/libcrypto.a \
-	/usr/x86_64-pc-linux-gnu/lib/libssl.a \
-	/usr/x86_64-pc-linux-gnu/lib/libtls.a
-
 # update world with our options
 RUN chgrp paludisbuild /dev/tty && \
 	eclectic env update && \
@@ -21,10 +16,10 @@ RUN chgrp paludisbuild /dev/tty && \
 	cave resolve -z -1 repository/python -x && \
 	cave resolve -z -1 repository/mixi -x && \
 	cave update-world -s jabber && \
-	cave resolve -ks -Sa -sa -B world -x -f --permit-old-version '*/*' && \
-	cave resolve -ks -Sa -sa -B world -x --permit-old-version '*/*' && \
+	cave resolve -ks -Sa -sa -B world -x -f --permit-old-version '*/*' --without sys-apps/paludis && \
+	cave resolve -ks -Sa -sa -B world -x --permit-old-version '*/*' --without sys-apps/paludis && \
 	cave purge -x && \
-	cave fix-linkage -x && \
+	cave fix-linkage -x -- --without sys-apps/paludis && \
 	rm -rf /var/cache/paludis/distfiles/* \
 		/var/tmp/paludis/build/*
 
